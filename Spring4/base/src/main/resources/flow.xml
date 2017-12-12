@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:c="http://www.springframework.org/schema/c"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:flow="http://www.springframework.org/schema/webflow-config"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+         http://www.springframework.org/schema/beans/spring-beans.xsd
+         http://www.springframework.org/schema/util
+         http://www.springframework.org/schema/util/spring-util.xsd
+         http://www.springframework.org/schema/aop
+         http://www.springframework.org/schema/aop/spring-aop.xsd
+         http://www.springframework.org/schema/context
+         http://www.springframework.org/schema/context/spring-context.xsd
+         http://www.springframework.org/schema/webflow-config
+         http://www.springframework.org/schema/webflow-config/spring-webflow-config-2.3.xsd
+">
+
+    <!-- 方式1 -->
+    <!--<flow:flow-registry id="registry" base-path="/flows">-->
+        <!--<flow:flow-location-pattern value="*-flow.xml"/>-->
+    <!--</flow:flow-registry>-->
+
+    <!-- 方式2 -->
+    <flow:flow-registry id="registry">
+        <flow:flow-location id="sendFlow" path="flows"/>
+    </flow:flow-registry>
+
+    <!--装配流程注册表的引用，将URL匹配到流程上-->
+    <bean class="org.springframework.webflow.mvc.servlet.FlowHandlerMapping">
+        <property name="flowRegistry" ref="registry"/>
+    </bean>
+
+    <!--流程MVC控制器-->
+    <!--<bean class="org.springframework.webflow.mvc.servlet.FlowHandlerAdapter">-->
+        <!--<property name="flowExecutor" ref="flowExecutor"/>-->
+    <!--</bean>-->
+
+</beans>

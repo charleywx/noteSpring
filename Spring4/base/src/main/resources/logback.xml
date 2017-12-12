@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%date %level [%file:%line] %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="org.apache" level="ERROR"/>
+    <logger name="org.eclipse.jetty" level="ERROR"/>
+    <logger name="org.springframework" level="ERROR"/>
+    <logger name="com.charley" level="INFO"/>
+
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILE"/>
+    </root>
+</configuration>

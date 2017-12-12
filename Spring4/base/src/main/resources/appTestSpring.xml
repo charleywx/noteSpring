@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:c="http://www.springframework.org/schema/c"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+         http://www.springframework.org/schema/beans/spring-beans.xsd
+         http://www.springframework.org/schema/util
+         http://www.springframework.org/schema/util/spring-util.xsd
+         http://www.springframework.org/schema/aop
+         http://www.springframework.org/schema/aop/spring-aop.xsd
+         http://www.springframework.org/schema/context
+         http://www.springframework.org/schema/context/spring-context.xsd
+">
+
+    <!-- 启用组件扫描 -->
+    <!-- <context:component-scan base-package="com.charley.spring.di"/> -->
+
+    <bean id="deptOri" class="com.charley.spring.di.original.DeptOri"></bean>
+
+    <!-- 使用c命名空间声明构造方法的参数 c命名空间不能使用集合类-->
+    <!-- c:dept-ref="deptOri" c:_1="张三" c:_2="23" -->
+    <!-- dept 参数名 -->
+    <!-- -ref 装配bean的引用，若没有则装配字面量 -->
+    <!-- deptOri 被装配的bean的ID -->
+    <!-- c:_1 第二个参数-->
+    <!-- c:_2 第三个参数-->
+    <!-- c:_="单独的"-->
+    <!-- <bean id="person" class="PersonOriC" c:dept-ref="deptOri" c:name="张三" c:age="33"/>-->
+    <!-- <bean id="person" class="PersonOriC" c:dept-ref="deptOri" c:_1="张三" c:_2="23"/>-->
+    <bean id="personOriC" class="com.charley.spring.di.original.PersonOriC" c:dept-ref="deptOri" c:_1="张三"
+          c:_2="23"/>
+
+    <!-- 声明构造方法的参数 -->
+    <!-- 集合类配置List、Set -->
+    <bean id="personOri" class="com.charley.spring.di.original.PersonOri">
+        <constructor-arg ref="deptOri"/>
+        <constructor-arg>
+            <value>李四</value>
+        </constructor-arg>
+        <constructor-arg value="22"/>
+        <!-- <constructor-arg>-->
+        <!--<null></null>-->
+        <!-- </constructor-arg>-->
+        <constructor-arg>
+            <list>
+                <value>hello</value>
+                <value>,</value>
+                <value>world</value>
+                <value>!</value>
+            </list>
+        </constructor-arg>
+    </bean>
+
+    <!-- <property>标签为注入bean的set属性方法-->
+    <!--<bean id="PersonOriP" class="PersonOriP">-->
+    <!--<property name="deptOri" ref="deptOri"/>-->
+    <!--<property name="pName" value="王五"/>-->
+    <!--<property name="pAge" value="24"/>-->
+    <!--<property name="pList">-->
+    <!--<list>-->
+    <!--<value>hello</value>-->
+    <!--<value>ppp</value>-->
+    <!--<value>!</value>-->
+    <!--</list>-->
+    <!--</property>-->
+    <!--</bean>-->
+
+    <!-- 同上、p标签的写法-->
+    <util:list id="pList">
+        <value>pname</value>
+        <value>is</value>
+        <value>pp</value>
+    </util:list>
+
+    <bean id="PersonOriP"
+          class="com.charley.spring.di.original.PersonOriP"
+          p:deptOri-ref="deptOri"
+          p:pName="王五2"
+          p:pAge="25"
+          p:pList-ref="pList"
+    />
+
+    <!-- util加载属性文件-->
+    <util:properties id="popBean" location="classpath:system.prop"/>
+
+
+    <!-- 导入其他资源-->
+    <!--<import resource="act*.xml"/>-->
+    <!--<bean class="com.charley.spring.di.config.DefaultConfig"/>-->
+
+    <!--默认proxy-target-class="true" -->
+    <!--若为false,则生成接口的代理-->
+    <bean id="cart" class="com.charley.spring.di.scope.ShoppingCart" scope="session">
+        <aop:scoped-proxy proxy-target-class="true"/>
+    </bean>
+
+</beans>

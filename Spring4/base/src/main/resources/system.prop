@@ -1,0 +1,9 @@
+year=2017
+month=10
+day=24
+
+path=com.charley.util
+
+testBl=true
+
+sql=update wuhan_roadstatus_center set status=? where mapid=? and id=?

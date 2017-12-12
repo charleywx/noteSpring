@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+         http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd"
+       profile="dev">
+
+    <!--profile="dev" 仅当Profile环境为dev时加载此文件-->
+
+    <bean class="com.charley.spring.di.config.ProfileConfig"/>
+
+    <beans profile="dev">
+        <jdbc:embedded-database id="dataSource">
+            <jdbc:script location="classpath: schema.sql"/>
+        </jdbc:embedded-database>
+    </beans>
+
+</beans>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+         http://www.springframework.org/schema/beans/spring-beans.xsd
+         http://www.springframework.org/schema/aop
+         http://www.springframework.org/schema/aop/spring-aop.xsd
+         http://www.springframework.org/schema/context
+         http://www.springframework.org/schema/context/spring-context.xsd
+">
+
+    <context:component-scan base-package="com.charley.spring.aop.xml, com.charley.spring.aop.within"/>
+
+    <aop:aspectj-autoproxy/>
+
+    <bean class="com.charley.spring.aop.aspect.AspectPoint"/>
+
+    <!--引用切面类-->
+    <bean id="aspectXml" class="com.charley.spring.aop.xml.AspectXml"/>
+
+    <!--方式一：-->
+    <!--<aop:config>-->
+    <!--<aop:aspect ref="aspectXml">-->
+    <!--<aop:before method="before" pointcut="execution(* com.charley.spring.aop.xml.Store.getStore())"/>-->
+    <!--<aop:after method="after" pointcut="execution(* com.charley.spring.aop.xml.Store.getStore())"/>-->
+    <!--<aop:after-returning method="afterReturning" pointcut="execution(* com.charley.spring.aop.xml.Store.getStore())"/>-->
+    <!--<aop:after-throwing method="afterThrowing" pointcut="execution(* com.charley.spring.aop.xml.Store.getStore())"/>-->
+    <!--</aop:aspect>-->
+    <!--</aop:config>-->
+
+    <!--方式二-->
+    <!--<aop:config>-->
+    <!--<aop:aspect ref="aspectXml">-->
+    <!--&lt;!&ndash;定义切点&ndash;&gt;-->
+    <!--<aop:pointcut id="point001" expression="execution(* com.charley.spring.aop.xml.Store.getStore())"/>-->
+
+    <!--<aop:before method="before" pointcut-ref="point001"/>-->
+    <!--<aop:after method="after" pointcut-ref="point001"/>-->
+    <!--<aop:after-returning method="afterReturning" pointcut-ref="point001"/>-->
+    <!--<aop:after-throwing method="afterThrowing" pointcut-ref="point001"/>-->
+    <!--</aop:aspect>-->
+    <!--</aop:config>-->
+
+    <!--方式三-->
+    <!--<aop:config>-->
+    <!--<aop:aspect ref="aspectXml">-->
+    <!--&lt;!&ndash;定义切点&ndash;&gt;-->
+    <!--<aop:pointcut id="point001" expression="execution(* com.charley.spring.aop.xml.Store.getStore())"/>-->
+
+    <!--<aop:around method="around" pointcut-ref="point001"/>-->
+    <!--</aop:aspect>-->
+    <!--</aop:config>-->
+
+    <!--带参数的情况-->
+    <!--<aop:config>-->
+    <!--<aop:aspect ref="aspectXml">-->
+    <!--&lt;!&ndash;定义切点 args(args02)中的参数 必须 与arg-names="newName"一致&ndash;&gt;-->
+    <!--<aop:pointcut id="point002" expression="execution(* com.charley.spring.aop.xml.Store.getStore2(..)) and args(newName)"/>-->
+    <!--<aop:after method="after02" pointcut-ref="point002" arg-names="newName"/>-->
+    <!--</aop:aspect>-->
+    <!--</aop:config>-->
+
+    <!--引入新功能-->
+    <bean id="declareBasic" class="com.charley.spring.aop.xml.DeclareImpl"/>
+    <aop:config proxy-target-class="true">
+        <aop:aspect>
+            <!--Store+表示类的实现，不是该类本身-->
+            <!--types-mathcing是之前原始的类，implement-interface是想要添加的功能的接口，default-impl是新功能的默认的实现。-->
+            <aop:declare-parents types-matching="com.charley.spring.aop.xml.Store"
+                                 implement-interface="com.charley.spring.aop.xml.DeclareBasic"
+                                 default-impl="com.charley.spring.aop.xml.DeclareImpl"/>
+        </aop:aspect>
+    </aop:config>
+
+    <!--测试切点的作用域-->
+    <!--<aop:config>-->
+        <!--<aop:aspect ref="aspectXml">-->
+            <!--&lt;!&ndash;定义切点&ndash;&gt;-->
+            <!--<aop:pointcut id="point001" expression="execution(* com.charley.spring.aop.xml.StorePrivate.getStore4())"/>-->
+            <!--<aop:around method="around" pointcut-ref="point001"/>-->
+        <!--</aop:aspect>-->
+    <!--</aop:config>-->
+
+</beans>
